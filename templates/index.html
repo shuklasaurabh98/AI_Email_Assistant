@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email AI Generator</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        textarea {
+            grid-column: span 2;
+            height: 80px;
+        }
+
+        button {
+            grid-column: span 2;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #00c6ff;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0072ff;
+            color: white;
+        }
+
+        .output {
+            margin-top: 20px;
+            background: white;
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            margin-top: 10px;
+            background: #28a745;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            textarea, button {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>📧 Email AI Generator</h2>
+
+    <form method="POST">
+        <div class="grid">
+
+            <input name="subject" placeholder="Subject" required>
+            <input name="purpose" placeholder="Purpose of Email">
+
+            <select name="template_type">
+                <option value="leave_request">Leave Request</option>
+                <option value="job_application">Job Application</option>
+                <option value="complaint">Complaint</option>
+                <option value="follow_up">Follow Up</option>
+            </select>
+
+            <select name="tone">
+                <option>Formal</option>
+                <option>Friendly</option>
+                <option>Professional</option>
+                <option>Apologetic</option>
+            </select>
+
+            <input name="recipient" placeholder="Recipient (e.g., Manager)" required>
+
+            <input name="sender" placeholder="Your Name" required>
+            <!-- <div id="aiSubject" style="display:none;">{{ subject }}</div> -->
+
+            <textarea name="key_points" placeholder="Key Points..." required></textarea>
+
+            <button type="submit">✨ Generate Email</button>
+            <!-- <button type="submit" name="action" value="regenerate">🔄 Regenerate</button> -->
+            <!-- <button onclick="sendGmail()">📧 Send via Gmail</button> -->
+            <button type="button" onclick="sendGmail()">📧 Send via Gmail</button>
+        </div>
+    </form>
+
+    {% if result %}
+        <!-- <div id="aiSubject" style="display: none;">{{ subject }}</div> -->
+        <div class="output" id="outputText">{{ result }}</div>
+        <button class="copy-btn" onclick="copyText()">📋 Copy</button>
+    {% endif %}
+</div>
+
+<script>
+function copyText() {
+    const text = document.getElementById("outputText").innerText;
+    navigator.clipboard.writeText(text);
+    // alert("Copied to clipboard!");
+}
+</script>
+
+<script>
+function sendGmail() {
+    const subject = document.querySelector('input[name="subject"]').value.trim();
+    // const subjectEl = document.querySelector("aiSubject");
+    const body = document.getElementById("outputText").innerText.trim();
+    // const recipient = document.querySelector('input[name="recipient"]').value.trim();
+
+    // if(!body){
+    //     alert("Generate email first!");
+    //     return;
+    // }
+
+    // const subject = subjectEl ? subjectEl.innerText.trim() : "";
+    // const body = bodyEl.innerText.trim();
+    const recipient = document.querySelector('input[name="recipient"]').value.trim();
+
+    // const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.open(gmailURL, '_blank');
+}
+</script>
+
+</body>
+</html>
