@@ -128,4 +128,9 @@ use your own API Key
 * Direct email sending via SMTP
 
 ---
+## 📸 Screenshots
+
+### 🏠 Home Page
+<img width="1842" height="968" alt="Screenshot from 2026-03-18 12-46-35" src="https://github.com/user-attachments/assets/20d1dd26-8877-4d78-846b-b3f6dfa2038f" />
+
 
